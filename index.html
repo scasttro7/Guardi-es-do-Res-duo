@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardiões do Resíduo — RDS Puranga Conquista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#6ec6f0; --sky-light:#a8e0f5;
+    --grass:#3fa34d; --grass-dark:#2b7a38; --trunk:#5c3a1a;
+    --wood:#8a5a2b; --wood-dark:#5c3a1a; --cream:#fdf1d6;
+    --ink:#2b2b2b; --red:#e0453d; --blue:#3a6fb5; --blue-dark:#2e4d7a;
+    --gold:#f5c542; --ok:#3fa34d; --warn:#e8942c; --danger:#d9432c;
+    --shell:#8b8f83; --shell-dark:#5a5d54;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--shell-dark); color:var(--ink); font-family:'VT323',monospace; min-height:100vh;}
+  body{
+    display:flex; justify-content:center; padding:26px 14px 50px;
+    background:
+      repeating-linear-gradient(135deg, rgba(0,0,0,0.06) 0 2px, transparent 2px 6px),
+      var(--shell-dark);
+  }
+
+  /* ---- The "screen" (agora colorida, Game Boy Color) ---- */
+  .wrap{
+    max-width:880px; width:100%; margin:0 auto; padding:26px 22px 50px;
+    background-image:
+      linear-gradient(180deg, rgba(168,224,245,0.35) 0%, rgba(110,198,240,0.15) 45%, rgba(43,122,56,0.35) 55%, rgba(43,122,56,0.55) 100%),
+      url('data:image/png;base64,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');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: top center;
+    image-rendering: pixelated;
+    border:6px solid var(--ink);
+    border-radius:6px;
+    box-shadow: 0 0 0 6px var(--shell), 0 0 0 10px var(--ink), inset 0 0 50px rgba(0,0,0,0.15);
+    position:relative;
+    overflow:hidden;
+  }
+  .cloud{
+    position:absolute; top:14px; opacity:0.9; pointer-events:none; z-index:1;
+    animation:driftCloud linear infinite;
+  }
+  @keyframes driftCloud{ from{transform:translateX(-60px);} to{transform:translateX(920px);} }
+
+  .wrap::after{
+    content:''; position:absolute; inset:0; pointer-events:none; z-index:5;
+    background:repeating-linear-gradient(180deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px);
+  }
+  .wrap.shake{animation:screenShake .4s ease;}
+
+  .eyebrow{
+    display:flex; align-items:center; gap:8px; font-family:'Press Start 2P',monospace;
+    font-size:9px; letter-spacing:0.03em; color:var(--ink); margin-bottom:16px; line-height:1.6;
+    background:var(--cream); border:2px solid var(--wood); display:inline-flex; padding:6px 10px;
+  }
+  .eyebrow::before{content:'\2726'; color:var(--red); display:inline-block;}
+
+  h1{font-family:'Press Start 2P',monospace; font-weight:400; font-size:clamp(15px,3.4vw,24px); line-height:1.5; margin-bottom:14px; color:var(--cream); text-shadow:2px 2px 0 var(--ink), -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink);}
+  h1 em{font-style:normal; color:var(--gold); text-shadow:2px 2px 0 var(--ink);}
+  .lede{font-family:'VT323',monospace; font-size:19px; line-height:1.45; color:var(--ink); max-width:64ch; margin-bottom:22px; background:var(--cream); border:3px solid var(--wood); padding:12px 16px;}
+  .lede b{color:var(--red); font-weight:700;}
+
+  /* ---- Territory select ---- */
+  .territory-select{display:none;}
+  .territory-select.show{display:block;}
+  .territory-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:10px;}
+  @media (max-width:680px){ .territory-grid{grid-template-columns:1fr;} }
+  .territory-card{
+    background:var(--cream); border:3px solid var(--wood);
+    border-radius:0; padding:18px; cursor:pointer; text-align:left; color:var(--ink);
+    font-family:inherit; transition:transform .1s;
+    box-shadow:4px 4px 0 var(--wood-dark);
+  }
+  .territory-card:hover{transform:translate(2px,2px); box-shadow:2px 2px 0 var(--wood-dark); background:#fff8e6;}
+  .territory-flag{font-size:22px; margin-bottom:8px;}
+  .territory-card h3{font-family:'Press Start 2P',monospace; font-size:11px; font-weight:400; color:var(--blue-dark); margin-bottom:10px; line-height:1.5;}
+  .territory-card p{font-size:16px; line-height:1.35; color:var(--ink); margin-bottom:10px;}
+  .territory-source{font-family:'VT323',monospace; font-size:14px; color:var(--wood-dark); border-top:2px dashed var(--wood); padding-top:8px;}
+
+  /* ---- Avatar caption ---- */
+  .avatar-text{
+    font-family:'VT323',monospace; font-size:17px; color:var(--ink); line-height:1.3;
+    margin-bottom:18px; min-height:22px; background:var(--cream); border:2px solid var(--wood); padding:8px 12px;
+  }
+  .avatar-text b{color:var(--red); font-family:'Press Start 2P',monospace; font-size:8px; display:block; margin-bottom:4px;}
+
+  /* ---- Sound toggle ---- */
+  .sound-toggle{
+    position:fixed; top:14px; right:14px; z-index:50;
+    background:var(--cream); border:3px solid var(--wood);
+    padding:8px 12px; font-family:'Press Start 2P',monospace; font-size:9px; color:var(--ink);
+    cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:3px 3px 0 var(--wood-dark);
+  }
+  .sound-toggle:hover{transform:translate(1px,1px); box-shadow:2px 2px 0 var(--wood-dark);}
+
+  /* ---- Screen shake / confetti ---- */
+  @keyframes screenShake{
+    0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);}
+    60%{transform:translateX(-4px);} 80%{transform:translateX(4px);}
+  }
+  .confetti{position:fixed; top:-20px; width:7px; height:7px; z-index:60; pointer-events:none; opacity:0.95;}
+  @keyframes confettiFall{
+    0%{transform:translateY(0) rotate(0deg); opacity:1;}
+    100%{transform:translateY(110vh) rotate(360deg); opacity:0.4;}
+  }
+
+  /* ---- HUD ---- */
+  .hud{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:22px;
+  }
+  @media (max-width:820px){ .hud{grid-template-columns:repeat(2,1fr);} }
+  .stat{
+    background:var(--cream); border:3px solid var(--wood);
+    padding:10px 12px;
+  }
+  .stat .label{font-family:'Press Start 2P',monospace; font-size:7px; letter-spacing:0; text-transform:uppercase; color:var(--blue-dark); margin-bottom:6px; line-height:1.4; min-height:20px;}
+  .stat .value{font-family:'Press Start 2P',monospace; font-weight:400; font-size:17px; line-height:1; color:var(--ink);}
+  .bar-track{height:8px; background:#e4d8b8; margin-top:8px; overflow:hidden; border:1px solid var(--wood);}
+  .bar-fill{height:100%; transition:width .4s ease, background .3s ease; background:var(--ok);}
+  .bar-fill.critical{animation:barBlink .5s steps(1) infinite;}
+  @keyframes barBlink{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  /* ---- Forest visual ---- */
+  .forest-strip{
+    border:3px solid var(--ink);
+    padding:0; margin-bottom:4px; height:200px; position:relative; overflow:hidden;
+  }
+  .world{
+    position:absolute; top:0; left:0; height:100%;
+    background-color:var(--grass);
+    background-image:
+      linear-gradient(45deg, rgba(255,255,255,0.06) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.06) 75%),
+      linear-gradient(45deg, rgba(255,255,255,0.06) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.06) 75%);
+    background-size:16px 16px;
+    background-position:0 0, 8px 8px;
+    transition:transform .05s linear;
+  }
+  .tree{transition:transform .3s ease; position:absolute; bottom:6px;}
+  .trees-layer{position:absolute; inset:0;}
+  .building{position:absolute; bottom:6px;}
+  .house{position:absolute; bottom:6px; text-align:center;}
+  .house.done .house-sprite{opacity:0.6;}
+  .house-sprite{
+    filter: drop-shadow(1px 0 0 #0b0b0b) drop-shadow(-1px 0 0 #0b0b0b) drop-shadow(0 1px 0 #0b0b0b) drop-shadow(0 -1px 0 #0b0b0b);
+  }
+
+  .canoe-overlay{
+    position:absolute; inset:0; z-index:20; display:none;
+    flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    background:rgba(60,122,143,0.55);
+  }
+  .canoe-overlay.show{display:flex;}
+  .canoe-sprite{ animation:canoeBob 0.9s ease-in-out infinite alternate; }
+  @keyframes canoeBob{ from{transform:translateY(0);} to{transform:translateY(6px);} }
+  .canoe-text{
+    font-family:'Press Start 2P',monospace; font-size:11px; color:#fff;
+    text-shadow:2px 2px 0 #0b0b0b; background:rgba(11,11,11,0.35); padding:6px 12px;
+  }
+
+  .quiz-overlay{
+    position:absolute; inset:0; z-index:25; display:none; align-items:center; justify-content:center;
+    background:rgba(20,20,20,0.72); padding:10px;
+  }
+  .quiz-overlay.show{display:flex;}
+  .quiz-box{
+    background:var(--cream); border:4px solid var(--ink); padding:16px 18px; max-width:90%;
+    box-shadow:5px 5px 0 var(--wood-dark);
+  }
+  .quiz-badge{
+    font-family:'Press Start 2P',monospace; font-size:9px; color:#fff; background:var(--red);
+    display:inline-block; padding:4px 8px; margin-bottom:10px;
+  }
+  .quiz-question{font-family:'VT323',monospace; font-size:18px; color:var(--ink); line-height:1.4; margin-bottom:14px;}
+  .quiz-buttons{display:flex; gap:10px;}
+  .quiz-btn{
+    font-family:'Press Start 2P',monospace; font-size:10px; padding:10px 14px; cursor:pointer;
+    background:#fff8e6; border:3px solid var(--wood); box-shadow:3px 3px 0 var(--wood-dark);
+  }
+  .quiz-btn:hover:not(:disabled){transform:translate(1px,1px); box-shadow:2px 2px 0 var(--wood-dark);}
+  .quiz-btn:disabled{opacity:0.5; cursor:default;}
+  .quiz-result{
+    margin-top:12px; font-family:'VT323',monospace; font-size:15px; color:var(--ink);
+    display:none; line-height:1.4;
+  }
+  .quiz-result.show{display:block;}
+
+  .badges-panel{
+    background:var(--cream); border:3px solid var(--wood); padding:12px 16px; margin:0 auto 20px; max-width:56ch; text-align:left;
+  }
+  .badges-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+  .badge-chip{
+    font-family:'VT323',monospace; font-size:14px; color:var(--ink); background:#fff8e6;
+    border:2px solid var(--wood); padding:5px 10px; display:flex; align-items:center; gap:6px;
+  }
+  .badge-icon{font-size:16px;}
+
+  .real-comparison{
+    background:#eef6f0; border:3px solid var(--grass-dark); padding:14px 18px; margin:0 auto 20px; max-width:60ch; text-align:left;
+  }
+  .rc-title{font-family:'Press Start 2P',monospace; font-size:11px; color:var(--grass-dark); margin-bottom:10px;}
+  .rc-row{display:flex; justify-content:space-between; font-family:'VT323',monospace; font-size:16px; padding:4px 0; border-bottom:1px dashed var(--wood);}
+  .rc-note{font-family:'VT323',monospace; font-size:13px; color:#5c3a1a; margin-top:8px; line-height:1.4;}
+
+  .cards-panel{
+    background:var(--cream); border:3px solid var(--wood); padding:10px 14px; margin-bottom:14px;
+  }
+  .cards-title{font-family:'Press Start 2P',monospace; font-size:9px; color:var(--blue-dark); margin-bottom:8px;}
+  .cards-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .card-slot{
+    width:40px; height:52px; border:2px solid var(--wood); background:#e4d8b8;
+    display:flex; align-items:center; justify-content:center; font-size:20px; cursor:default;
+  }
+  .card-slot.filled{background:#fff8e6; cursor:pointer; box-shadow:2px 2px 0 var(--wood-dark);}
+  .card-slot.filled:hover{transform:translate(-1px,-1px);}
+  .card-detail{
+    margin-top:10px; font-family:'VT323',monospace; font-size:15px; color:var(--ink);
+    background:#fff8e6; border:2px dashed var(--wood); padding:8px 10px; display:none;
+  }
+  .card-detail.show{display:block;}
+  .card-detail .src{font-size:12px; color:var(--wood-dark); display:block; margin-top:4px;}
+
+  .npc{
+    position:absolute; bottom:6px; text-align:center;
+  }
+  .npc-sprite{
+    filter: drop-shadow(1.2px 0 0 #0b0b0b) drop-shadow(-1.2px 0 0 #0b0b0b) drop-shadow(0 1.2px 0 #0b0b0b) drop-shadow(0 -1.2px 0 #0b0b0b);
+  }
+  .npc-tag{
+    font-family:'Press Start 2P',monospace; font-size:9px; color:var(--ink); background:#fff8e6;
+    border:2px solid var(--wood); padding:3px 6px; white-space:nowrap; margin-bottom:4px; display:inline-block;
+    box-shadow:2px 2px 0 var(--wood-dark);
+  }
+  .npc.done{opacity:0.55;}
+  .npc-flag{
+    position:absolute; top:-16px; left:50%; transform:translateX(-50%);
+    font-family:'Press Start 2P',monospace; font-size:11px; color:var(--red);
+    animation:flagBounce .6s ease-in-out infinite alternate;
+  }
+  @keyframes flagBounce{ from{transform:translate(-50%,0);} to{transform:translate(-50%,-4px);} }
+
+  .move-hint{
+    font-family:'VT323',monospace; font-size:14px; color:var(--ink); text-align:center;
+    margin-bottom:14px; background:var(--cream); border:2px solid var(--wood); padding:6px;
+  }
+  .move-hint kbd{
+    font-family:'Press Start 2P',monospace; font-size:9px; background:var(--ink); color:var(--cream);
+    padding:2px 5px; border-radius:2px;
+  }
+  .touch-controls{display:none; justify-content:space-between; margin-top:8px;}
+  @media (max-width:680px){ .touch-controls{display:flex;} }
+  .touch-btn{
+    font-family:'Press Start 2P',monospace; font-size:16px; color:var(--cream);
+    background:var(--wood); border:3px solid var(--ink); width:56px; height:44px;
+    display:flex; align-items:center; justify-content:center; user-select:none; touch-action:none;
+  }
+
+  .char-stage{position:absolute; inset:0;}
+  .char{
+    position:absolute; bottom:6px; left:10px;
+    filter: drop-shadow(1.5px 0 0 #0b0b0b) drop-shadow(-1.5px 0 0 #0b0b0b) drop-shadow(0 1.5px 0 #0b0b0b) drop-shadow(0 -1.5px 0 #0b0b0b);
+  }
+  .bubble{
+    position:absolute; bottom:140px; left:10px; opacity:0; transition:opacity .2s;
+  }
+  .bubble.show{opacity:1;}
+
+  /* ---- Dialogue box (estilo Pokémon/SNES RPG) ---- */
+  .panel{
+    background:var(--cream); border:3px solid var(--wood);
+    padding:20px 22px; margin-bottom:20px; box-shadow:4px 4px 0 var(--wood-dark);
+  }
+  .panel h3{font-family:'Press Start 2P',monospace; font-size:11px; font-weight:400; color:var(--blue-dark); margin-bottom:12px; line-height:1.5;}
+  .year-badge{
+    font-family:'Press Start 2P',monospace; font-size:9px; color:var(--cream);
+    background:var(--red); display:inline-block; padding:4px 10px; margin-bottom:12px;
+  }
+  .event-text{font-family:'VT323',monospace; font-size:18px; line-height:1.4; color:var(--ink); margin-bottom:6px;}
+  .event-text b{color:var(--red); font-weight:700;}
+
+  .dialogue-box{position:relative; min-height:118px; background:var(--cream); border:4px solid var(--ink);}
+  .dialogue-box .event-text{min-height:64px;}
+  .dialogue-arrow{
+    position:absolute; right:20px; bottom:14px; font-size:16px; color:var(--ink);
+    opacity:0; animation:arrowBlink 0.8s steps(1) infinite;
+  }
+  .dialogue-arrow.show{opacity:1;}
+  @keyframes arrowBlink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+  .choices.typing{opacity:0.35; pointer-events:none;}
+
+  /* ---- Choices ---- */
+  .choices{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px;}
+  @media (max-width:680px){ .choices{grid-template-columns:1fr;} }
+  .choice{
+    background:#fff8e6; border:3px solid var(--wood);
+    padding:14px; text-align:left; cursor:pointer; color:var(--ink);
+    transition:transform .1s; font-family:inherit;
+    box-shadow:4px 4px 0 var(--wood-dark);
+  }
+  .choice:hover{transform:translate(2px,2px); box-shadow:2px 2px 0 var(--wood-dark); background:var(--gold);}
+  .choice .ctitle{font-family:'Press Start 2P',monospace; font-weight:400; font-size:10px; margin-bottom:8px; color:var(--blue-dark); line-height:1.5;}
+  .choice .cdesc{font-family:'VT323',monospace; font-size:15.5px; line-height:1.3; color:var(--ink);}
+  .choice .ceffect{font-family:'VT323',monospace; font-size:14px; color:var(--wood-dark); margin-top:8px; display:flex; gap:10px; flex-wrap:wrap;}
+
+  .log{max-height:150px; overflow-y:auto; margin-top:6px;}
+  .log-row{font-family:'VT323',monospace; font-size:15px; color:var(--ink); padding:5px 0; border-bottom:2px dashed var(--wood); display:flex; gap:8px;}
+  .log-row b{color:var(--red); font-weight:700;}
+
+  /* ---- End screen ---- */
+  .end-screen{display:none; text-align:center; padding:26px 10px;}
+  .end-screen.show{display:block;}
+  .verdict{font-family:'Press Start 2P',monospace; font-weight:400; font-size:clamp(12px,2.8vw,17px); line-height:1.6; margin-bottom:14px; color:var(--ink); padding:10px 14px; display:inline-block; border:3px solid var(--ink);}
+  .verdict.good{background:var(--ok); color:#fff;}
+  .verdict.mid{background:var(--warn); color:#fff;}
+  .verdict.bad{background:var(--danger); color:#fff; animation:avatarShake .5s 2;}
+  .end-desc{font-family:'VT323',monospace; font-size:18px; line-height:1.5; color:var(--ink); max-width:56ch; margin:0 auto 22px; background:var(--cream); border:3px solid var(--wood); padding:14px 18px;}
+  .end-stats{display:flex; justify-content:center; gap:24px; flex-wrap:wrap; margin-bottom:24px;}
+  .end-stat{text-align:center;}
+  .end-stat .n{font-family:'Press Start 2P',monospace; font-size:15px; font-weight:400; color:var(--blue-dark);}
+  .end-stat .l{font-family:'VT323',monospace; font-size:13px; color:var(--wood-dark); text-transform:uppercase; letter-spacing:0.03em; margin-top:6px;}
+  .restart{
+    font-family:'Press Start 2P',monospace; font-weight:400; font-size:11px; color:#fff;
+    background:var(--red); border:3px solid var(--ink); padding:14px 26px; cursor:pointer; box-shadow:4px 4px 0 var(--wood-dark);
+  }
+  .restart:hover{transform:translate(2px,2px); box-shadow:2px 2px 0 var(--wood-dark);}
+
+  .game-area.hidden{display:none;}
+  .hidden{display:none !important;}
+  .interior-screen{display:none;}
+  .interior-screen.show{display:block; background:#fff8e6;}
+
+  .footer-note{
+    margin-top:30px; padding-top:18px; border-top:2px dashed var(--cream);
+    font-family:'VT323',monospace; font-size:14px; color:var(--ink); line-height:1.4; max-width:70ch;
+    background:rgba(253,241,214,0.85); padding:10px 14px;
+  }
+
+  @keyframes avatarShake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-2px);} 75%{transform:translateX(2px);} }
+</style>
+</head>
+<body>
+<button class="sound-toggle" id="soundToggle">🔊 Som</button>
+<button class="sound-toggle" id="langToggle" style="top:60px;">🇧🇷 PT</button>
+<div class="wrap" id="pageWrap">
+  <div class="cloud" id="cloud1" style="top:10px; animation-duration:38s;"></div>
+  <div class="cloud" id="cloud2" style="top:36px; animation-duration:52s; animation-delay:-20s;"></div>
+
+
+
+  <div class="eyebrow">BIODATUM · ForestR · IPEB · Transição Energética &amp; Descarbonização</div>
+  <h1>Guardiões do Resíduo <em>— energia sem desmatar</em></h1>
+  <p class="lede">
+    Um jogo de gestão sobre <b>transição energética</b>: você decide quanta biomassa residual
+    (galhada, madeira morta, desbaste) extrair a cada ano pra substituir diesel por energia
+    renovável descentralizada — sem esgotar a floresta em regeneração nem perder a comunidade
+    que depende dela. Escolha o território:
+  </p>
+
+  <div class="territory-select show" id="territorySelect">
+    <div class="territory-grid">
+      <button class="territory-card" data-territory="brasil">
+        <div class="territory-flag">🇧🇷</div>
+        <h3>RDS Puranga Conquista</h3>
+        <p>Amazonas, Brasil — comunidade Terra Preta, déficit energético real documentado, beneficiamento de açaí, cumaru e cacau.</p>
+        <div class="territory-source">PRODES/INPE · GEDI L4A real (BIODATUM, 2026)</div>
+      </button>
+      <button class="territory-card" data-territory="bolivia">
+        <div class="territory-flag">🇧🇴</div>
+        <h3>Território amazônico boliviano</h3>
+        <p>Bolívia, membro pleno do MERCOSUL — mesma arquitetura de dados abertos, testando se o IPEB se sustenta fora do Brasil.</p>
+        <div class="territory-source">MapBiomas Bolivia, Coleção v1 (Earth Engine Data Catalog)</div>
+      </button>
+    </div>
+  </div>
+
+  <div class="game-area hidden" id="gameArea">
+
+    <div class="hud">
+      <div class="stat">
+        <div class="label">Saúde da capoeira</div>
+        <div class="value" id="hpVal">100</div>
+        <div class="bar-track"><div class="bar-fill" id="hpBar" style="width:100%; background:var(--ok);"></div></div>
+      </div>
+      <div class="stat">
+        <div class="label" id="trustLabel">Confiança de Terra Preta</div>
+        <div class="value" id="trustVal">50</div>
+        <div class="bar-track"><div class="bar-fill" id="trustBar" style="width:50%; background:var(--blue);"></div></div>
+      </div>
+      <div class="stat">
+        <div class="label">Energia acumulada</div>
+        <div class="value" id="energyVal">0</div>
+        <div class="bar-track"><div class="bar-fill" id="energyBar" style="width:0%; background:var(--gold);"></div></div>
+      </div>
+      <div class="stat">
+        <div class="label">CO₂ evitado (t)</div>
+        <div class="value" id="co2Val">0</div>
+        <div class="bar-track"><div class="bar-fill" id="co2Bar" style="width:0%; background:var(--grass-dark);"></div></div>
+      </div>
+      <div class="stat">
+        <div class="label">Ano</div>
+        <div class="value" id="yearVal">1 / 10</div>
+        <div class="bar-track"><div class="bar-fill" id="yearBar" style="width:10%; background:var(--wood);"></div></div>
+      </div>
+    </div>
+
+    <div class="cards-panel" id="cardsPanel">
+      <div class="cards-title" data-i18n="cardsCollected">Cartas de conhecimento coletadas</div>
+      <div class="cards-row" id="cardsRow"></div>
+      <div class="card-detail" id="cardDetail"></div>
+    </div>
+
+    <div id="overworldScreen">
+    <div class="move-hint" data-i18n="moveHint">Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> (ou os botões abaixo) pra caminhar pela RDS e encontrar quem precisa falar com você</div>
+    <div class="forest-strip" id="forestStrip">
+      <div class="canoe-overlay" id="canoeOverlay">
+        <div class="canoe-sprite"></div>
+        <div class="canoe-text">Atravessando de canoa...</div>
+      </div>
+      <div class="quiz-overlay" id="quizOverlay">
+        <div class="quiz-box">
+          <div class="quiz-badge">⚡ PERGUNTA-RELÂMPAGO</div>
+          <div class="quiz-question" id="quizQuestion"></div>
+          <div class="quiz-buttons">
+            <button class="quiz-btn" id="quizTrueBtn">✅ Verdadeiro</button>
+            <button class="quiz-btn" id="quizFalseBtn">❌ Falso</button>
+          </div>
+          <div class="quiz-result" id="quizResult"></div>
+        </div>
+      </div>
+      <div class="world" id="world">
+        <div class="trees-layer" id="treesLayer"></div>
+        <div class="building" id="buildingSprite"></div>
+        <div class="npc-layer" id="housesLayer"></div>
+        <div class="npc-layer" id="npcLayer"></div>
+        <div class="char-stage" id="charStage">
+          <div class="bubble" id="thoughtBubble"></div>
+          <div class="char" id="charSprite"></div>
+        </div>
+      </div>
+    </div>
+    <div class="touch-controls">
+      <div class="touch-btn" id="btnLeft">&larr;</div>
+      <div class="touch-btn" id="btnRight">&rarr;</div>
+    </div>
+    <div class="avatar-text" id="avatarText"><b data-i18n="guardianSays">GUARDIÃO DIZ:</b> <span data-i18n="avatarIntro">"Vamos com calma este ano — a floresta e a comunidade estão contando com você."</span></div>
+
+    <div class="panel dialogue-box" id="dialogueBox">
+      <div class="year-badge" id="yearBadge">ANO 1</div>
+      <h3 id="eventTitle">Início do manejo</h3>
+      <p class="event-text" id="eventText"></p>
+      <div class="dialogue-arrow" id="dialogueArrow">▼</div>
+
+      <div class="choices" id="choices">
+        <button class="choice" data-intensity="baixo">
+          <div class="ctitle" data-i18n="choiceLowTitle">Extração baixa</div>
+          <div class="cdesc" data-i18n="choiceLowDesc">~5% do resíduo em pé. Conservador, a capoeira se recupera fácil.</div>
+          <div class="ceffect"><span>🌱 <span data-i18n="hpUp">saúde +</span></span><span>⚡ <span data-i18n="energyLow">energia baixa</span></span></div>
+        </button>
+        <button class="choice" data-intensity="media">
+          <div class="ctitle" data-i18n="choiceMedTitle">Extração média</div>
+          <div class="cdesc" data-i18n="choiceMedDesc">~10% do resíduo — a premissa conservadora usada no IPEB real do projeto.</div>
+          <div class="ceffect"><span>🌿 <span data-i18n="hpStable">saúde estável</span></span><span>⚡ <span data-i18n="energyMed">energia média</span></span></div>
+        </button>
+        <button class="choice" data-intensity="alta">
+          <div class="ctitle" data-i18n="choiceHighTitle">Extração alta</div>
+          <div class="cdesc" data-i18n="choiceHighDesc">~18% do resíduo. Mais energia agora, mas pressiona a regeneração.</div>
+          <div class="ceffect"><span>🔥 <span data-i18n="hpDown">saúde −</span></span><span>⚡ <span data-i18n="energyHigh">energia alta</span></span></div>
+        </button>
+      </div>
+    </div>
+    </div>
+
+    <div class="panel interior-screen" id="interiorScreen">
+      <div class="year-badge" id="interiorBadge">POSTO DE PESQUISA BIODATUM</div>
+      <h3 data-i18n="communityLeader">Líder comunitário</h3>
+      <p class="event-text" id="interiorText"></p>
+      <button class="restart" id="exitBuildingBtn" style="margin-top:14px; font-size:10px; padding:10px 20px;" data-i18n="exitBtn">Sair</button>
+    </div>
+
+    <div class="panel">
+      <h3 data-i18n="yearLog">Registro dos anos</h3>
+      <div class="log" id="log"><div class="log-row" data-i18n="waitingFirst">Aguardando sua primeira decisão…</div></div>
+    </div>
+  </div>
+
+  <div class="end-screen" id="endScreen">
+    <div class="verdict" id="verdictText">—</div>
+    <p class="end-desc" id="verdictDesc"></p>
+    <div class="end-stats">
+      <div class="end-stat"><div class="n" id="finalHp">—</div><div class="l" data-i18n="finalHealth">Saúde final</div></div>
+      <div class="end-stat"><div class="n" id="finalTrust">—</div><div class="l" data-i18n="finalTrust">Confiança final</div></div>
+      <div class="end-stat"><div class="n" id="finalEnergy">—</div><div class="l" data-i18n="finalMwh">MWh acumulados</div></div>
+    </div>
+
+    <div class="badges-panel">
+      <div class="cards-title">🏅 Conquistas</div>
+      <div class="badges-row" id="badgesRow"></div>
+    </div>
+
+    <div class="real-comparison" id="realComparison"></div>
+
+    <canvas id="shareCanvas" width="700" height="420" style="display:none;"></canvas>
+    <a id="downloadCardBtn" download="ipeb-resultado.png" style="text-decoration:none;">
+      <button class="restart" style="margin-right:10px;">📤 Baixar cartão</button>
+    </a>
+    <button class="restart" id="restartBtn" data-i18n="playAgain">Jogar de novo</button>
+  </div>
+
+  <div class="footer-note">
+    Mecânica baseada nos parâmetros reais do IPEB (Seção 6.6 da proposta ao 19º Prêmio MERCOSUL de
+    Ciência, Tecnologia e Inovação): 60–100 Mg/ha de biomassa em capoeira amazônica, 18,5 MJ/kg de
+    poder calorífico, e o déficit energético real documentado em Terra Preta, RDS Puranga Conquista
+    (Amazônia Latitude, 2026). CO₂ evitado estimado a partir do fator de emissão típico de geradores
+    a diesel em sistemas isolados amazônicos (~0,8 tCO₂/MWh; Barbosa, 2010) — premissa ilustrativa,
+    não uma medição de campo. Território boliviano ilustra a replicabilidade da arquitetura de dados
+    (MapBiomas Bolivia, Coleção v1) discutida na Seção 4 da proposta. Eventos aleatórios (seca,
+    mercado, chuva) simulam a incerteza real de manejo territorial. Autora: Sabrina Castro da Silva,
+    PPGCASA/UFAM.
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const TREE_COUNT_TOTAL = 16;
+  const TOTAL_YEARS = 10;
+  const CO2_FACTOR = 0.8; // tCO2/MWh evitado, diesel isolado (Barbosa, 2010) — premissa ilustrativa
+
+  // ========================= ÁUDIO (chiptune procedural, sem arquivos externos) =========================
+  let audioCtx = null;
+  let soundOn = true;
+  let musicTimer = null;
+  let currentMode = 'calm';
+
+  const NOTES = { // frequências (Hz)
+    C4:261.63, D4:293.66, E4:329.63, F4:349.23, G4:392.00, A4:440.00, B4:493.88,
+    C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99, A5:880.00,
+    Ef4:311.13, Gf4:369.99, Af4:415.30, Bf4:466.16, D5s:622.25,
+  };
+
+  const CALM_MELODY = [
+    ['C4',0.22],['E4',0.22],['G4',0.22],['C5',0.22],
+    ['G4',0.22],['E4',0.22],['A4',0.22],['G4',0.22],
+    ['F4',0.22],['A4',0.22],['C5',0.22],['G4',0.22],
+    ['E4',0.22],['D4',0.22],['G4',0.22],['C4',0.30],
+  ];
+  const CALM_BASS = [
+    ['C4',0.44],['G4',0.44],['A4',0.44],['F4',0.44],
+  ];
+
+  const TENSE_MELODY = [
+    ['C4',0.14],['Ef4',0.14],['Gf4',0.14],['C4',0.14],
+    ['D4',0.14],['Ef4',0.14],['Af4',0.14],['D4',0.14],
+    ['C4',0.14],['Gf4',0.14],['Ef4',0.14],['Bf4',0.14],
+    ['C4',0.10],['C4',0.10],['Ef4',0.10],['C4',0.20],
+  ];
+  const TENSE_BASS = [
+    ['C4',0.28],['C4',0.28],['Ef4',0.28],['D4',0.28],
+  ];
+
+  function ensureAudio(){
+    if(!audioCtx){
+      try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      catch(e){ soundOn = false; }
+    }
+    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function beep(freq, dur, type, gainVal, when){
+    if(!soundOn || !audioCtx) return;
+    const t = when !== undefined ? when : audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type || 'square';
+    osc.frequency.setValueAtTime(freq, t);
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(gainVal || 0.06, t + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(t); osc.stop(t + dur + 0.02);
+  }
+
+  function playSfx(kind){
+    if(!soundOn) return;
+    ensureAudio();
+    if(!audioCtx) return;
+    const t = audioCtx.currentTime;
+    if(kind === 'click'){
+      beep(660, 0.07, 'square', 0.05, t);
+    } else if(kind === 'good'){
+      [523.25,659.25,783.99,1046.5].forEach((f,i)=>beep(f,0.16,'square',0.06,t+i*0.09));
+    } else if(kind === 'bad'){
+      [392,329.63,261.63,196].forEach((f,i)=>beep(f,0.22,'sawtooth',0.05,t+i*0.11));
+    } else if(kind === 'select'){
+      [440,554.37,659.25].forEach((f,i)=>beep(f,0.12,'triangle',0.05,t+i*0.06));
+    }
+  }
+
+  function scheduleLoop(mode){
+    currentMode = mode;
+    if(musicTimer) clearTimeout(musicTimer);
+    if(!soundOn || !audioCtx) return;
+
+    const melody = mode === 'tense' ? TENSE_MELODY : CALM_MELODY;
+    const bass = mode === 'tense' ? TENSE_BASS : CALM_BASS;
+    let mi = 0, bi = 0, t = audioCtx.currentTime + 0.05;
+    let bassElapsed = 0;
+
+    function step(){
+      if(currentMode !== mode) return; // mode changed mid-loop, stop this chain
+      const [noteName, dur] = melody[mi % melody.length];
+      const transpose = (territory && territory.flag === '🇧🇴') ? 1.06 : 1; // leve variação regional
+      beep(NOTES[noteName]*transpose, dur*0.9, mode === 'tense' ? 'sawtooth' : 'square', mode === 'tense' ? 0.045 : 0.05, audioCtx.currentTime);
+
+      if(bassElapsed <= 0){
+        const [bNote, bDur] = bass[bi % bass.length];
+        beep(NOTES[bNote]/2*transpose, bDur*0.9, 'triangle', 0.05, audioCtx.currentTime);
+        bassElapsed = bDur;
+        bi++;
+      }
+      bassElapsed -= dur;
+      mi++;
+      musicTimer = setTimeout(step, dur*1000);
+    }
+    step();
+  }
+
+  function stopMusic(){
+    if(musicTimer) clearTimeout(musicTimer);
+    currentMode = 'stopped';
+  }
+
+  document.getElementById('soundToggle').addEventListener('click', ()=>{
+    soundOn = !soundOn;
+    document.getElementById('soundToggle').textContent = soundOn ? '🔊 Som' : '🔇 Mudo';
+    if(soundOn){ ensureAudio(); scheduleLoop(pickMusicMode()); }
+    else { stopMusic(); }
+  });
+
+  // ========================= TERRITÓRIOS =========================
+  const TERRITORIES = {
+    brasil: {
+      communityName: "Terra Preta",
+      trustLabel: "Confiança de Terra Preta",
+      intro: "A safra de açaí se aproxima e Terra Preta precisa de energia estável pra rodar o beneficiamento.",
+      vegName: "capoeira amazônica",
+      communities: ["Pagodão", "Bela Vista do Jaraqui", "Santa Maria", "Costa do Arara", "Bela Vista do Jaraquizinho"],
+      flag: "🇧🇷",
+      lang: "pt",
+      houses: {
+        "Pagodão": { occupation: "pescador", roofColor: "#8a5a2b", card: { icon:"🐟", fact:"GEDI (LARSE/GEDI04_A_002) mede altura de dossel via laser espacial — foi assim que medimos a floresta de Puranga Conquista sem pisar nela.", src:"Dubayah et al., GEDI L4A, NASA/USGS" } },
+        "Bela Vista do Jaraqui": { occupation: "extrativista de castanha", roofColor: "#3a6fb5", card: { icon:"🌰", fact:"A vegetação secundária amazônica acumula, em média, 10–15 Mg/ha de biomassa por ano nos primeiros 20 anos de regeneração.", src:"Uhl et al. (1988); Fearnside & Guimarães (1996)" } },
+        "Santa Maria": { occupation: "professora", roofColor: "#c9524a", card: { icon:"📖", fact:"As equações de Higuchi et al. (1998) pra biomassa amazônica seguem sendo a referência mais usada na região 27 anos depois.", src:"Higuchi et al., Acta Amazonica, 1998" } },
+        "Costa do Arara": { occupation: "agente de saúde", roofColor: "#8a5a2b", card: { icon:"⚡", fact:"Em Terra Preta, a rede elétrica entrega só 96–98V — abaixo do mínimo da ANEEL (127V) — o que barra o beneficiamento de açaí, cumaru e cacau.", src:"Amazônia Latitude, 2026" } },
+        "Bela Vista do Jaraquizinho": { occupation: "condutora de turismo", roofColor: "#3a6fb5", card: { icon:"🛶", fact:"A RDS Puranga Conquista tem cerca de 86.233 hectares — confirmado pelo polígono oficial usado nesta pesquisa.", src:"Shapefile oficial RDS T1/T2/T3" } },
+      },
+    },
+    bolivia: {
+      communityName: "Tumupasa",
+      trustLabel: "Confiança da comunidade (Bolívia)",
+      intro: "A colheita de castanha se aproxima e a comunidade precisa de energia estável para o beneficiamento.",
+      vegName: "vegetação secundária amazônica",
+      communities: ["Tumupasa", "Las Mercedes", "Toromonas", "Puerto Pérez", "San Borja"],
+      flag: "🇧🇴",
+      lang: "es",
+      houses: {
+        "Tumupasa": { occupation: "pescador", roofColor: "#8a5a2b", card: { icon:"🐟", fact:"MapBiomas publica coleções de uso do solo pra vários países do MERCOSUL, incluindo a Bolívia — o mesmo protocolo de dados serve aqui.", src:"MapBiomas Bolivia, Coleção v1" } },
+        "Las Mercedes": { occupation: "extrativista de castaña", roofColor: "#3a6fb5", card: { icon:"🌰", fact:"O povo Tacana ocupa territórios entre Peru, Brasil e Bolívia, na região de Pando, Beni e La Paz.", src:"FILAC, 2024" } },
+        "Toromonas": { occupation: "profesora", roofColor: "#c9524a", card: { icon:"📖", fact:"A OTCA reúne 8 países amazônicos, incluindo a Bolívia, em torno de cooperação e investimento sustentável na região.", src:"OTCA, Guide for Sustainable Investment, 2024" } },
+        "Puerto Pérez": { occupation: "agente de salud", roofColor: "#8a5a2b", card: { icon:"⚡", fact:"O RenovaBio (Lei 13.576/2017) teve sua constitucionalidade confirmada pelo STF em 2025, fortalecendo o mercado de créditos de descarbonização no Brasil.", src:"STF, ADI 7596 e 7617, 2025" } },
+        "San Borja": { occupation: "guía de turismo", roofColor: "#3a6fb5", card: { icon:"🛶", fact:"O Tropical Forests Forever Facility (TFFF), lançado na COP30, opera simultaneamente na Amazônia, no Congo e no Sudeste Asiático.", src:"TFFF, COP30, 2026" } },
+      },
+    },
+  };
+
+  let territory = TERRITORIES.brasil;
+
+  // ========================= IDIOMA (PT/ES — replicabilidade MERCOSUL) =========================
+  const I18N = {
+    pt: {
+      moveHint: 'Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> (ou os botões abaixo) pra caminhar pela RDS e encontrar quem precisa falar com você',
+      guardianSays: 'GUARDIÃO DIZ:',
+      avatarIntro: '"Vamos com calma este ano — a floresta e a comunidade estão contando com você."',
+      choiceLowTitle: 'Extração baixa', choiceLowDesc: '~5% do resíduo em pé. Conservador, a capoeira se recupera fácil.',
+      choiceMedTitle: 'Extração média', choiceMedDesc: '~10% do resíduo — a premissa conservadora usada no IPEB real do projeto.',
+      choiceHighTitle: 'Extração alta', choiceHighDesc: '~18% do resíduo. Mais energia agora, mas pressiona a regeneração.',
+      hpUp:'saúde +', hpStable:'saúde estável', hpDown:'saúde −',
+      energyLow:'energia baixa', energyMed:'energia média', energyHigh:'energia alta',
+      communityLeader: 'Líder comunitário', exitBtn: 'Sair',
+      yearLog: 'Registro dos anos', waitingFirst: 'Aguardando sua primeira decisão…',
+      finalHealth: 'Saúde final', finalTrust: 'Confiança final', finalMwh: 'MWh acumulados',
+      playAgain: 'Jogar de novo', soundOn: '🔊 Som', soundOff: '🔇 Mudo',
+      yourHouse: 'casa de', talkTo: 'Falar com',
+      quizCorrect: 'Certo! Pequeno bônus de confiança.', quizWrong: 'Quase — a resposta certa era:',
+      cardsCollected: 'Cartas de conhecimento coletadas',
+      canoeCrossing: 'Atravessando de canoa...',
+    },
+    es: {
+      moveHint: 'Usa <kbd>&larr;</kbd> <kbd>&rarr;</kbd> (o los botones abajo) para caminar por la RDS y encontrar a quien necesita hablar contigo',
+      guardianSays: 'EL GUARDIÁN DICE:',
+      avatarIntro: '"Vamos con calma este año — el bosque y la comunidad cuentan contigo."',
+      choiceLowTitle: 'Extracción baja', choiceLowDesc: '~5% del residuo en pie. Conservador, el bosque secundario se recupera fácil.',
+      choiceMedTitle: 'Extracción media', choiceMedDesc: '~10% del residuo — la premisa conservadora usada en el IPEB real del proyecto.',
+      choiceHighTitle: 'Extracción alta', choiceHighDesc: '~18% del residuo. Más energía ahora, pero presiona la regeneración.',
+      hpUp:'salud +', hpStable:'salud estable', hpDown:'salud −',
+      energyLow:'energía baja', energyMed:'energía media', energyHigh:'energía alta',
+      communityLeader: 'Líder comunitario', exitBtn: 'Salir',
+      yearLog: 'Registro de los años', waitingFirst: 'Esperando tu primera decisión…',
+      finalHealth: 'Salud final', finalTrust: 'Confianza final', finalMwh: 'MWh acumulados',
+      playAgain: 'Jugar de nuevo', soundOn: '🔊 Sonido', soundOff: '🔇 Silencio',
+      yourHouse: 'casa de', talkTo: 'Hablar con',
+      quizCorrect: '¡Correcto! Pequeño bono de confianza.', quizWrong: 'Casi — la respuesta correcta era:',
+      cardsCollected: 'Cartas de conocimiento recolectadas',
+      canoeCrossing: 'Cruzando en canoa...',
+    },
+  };
+  let lang = 'pt';
+  function T(key){ return (I18N[lang] && I18N[lang][key]) || I18N.pt[key] || key; }
+
+  function applyLanguage(){
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      el.innerHTML = T(key);
+    });
+    document.getElementById('soundToggle').textContent = soundOn ? T('soundOn') : T('soundOff');
+    document.getElementById('langToggle').textContent = lang === 'pt' ? '🇧🇷 PT' : '🇧🇴 ES';
+  }
+
+  document.getElementById('langToggle').addEventListener('click', ()=>{
+    lang = lang === 'pt' ? 'es' : 'pt';
+    applyLanguage();
+  });
+  let state = { hp:100, trust:50, energy:0, year:1, log:[], minHp:100, minTrust:100, usedHigh:false, quizCorrect:0, quizTotal:0 };
+
+  const EVENTS = [
+    { title:"Ano tranquilo", text:"O clima colaborou. Sem intercorrências — decisão livre.", mod:{} },
+    { title:"Seca na bacia", text:"Estação seca mais intensa que o normal atrasa a regeneração da vegetação. Extrair muito agora custa mais caro em saúde.", mod:{hpPenaltyMult:1.6} },
+    { title:"Mercado aquecido de produtos florestais", text:"Comerciantes pagam mais por beneficiamento constante — a comunidade pressiona por mais energia este ano.", mod:{trustDemand:1.5} },
+    { title:"Chuvas regulares", text:"Ano de recarga hídrica favorável. A vegetação se recupera mais rápido que o normal.", mod:{hpBonus:6} },
+    { title:"Visita técnica de fiscalização ambiental", text:"Fiscalização de rotina confirma que o território segue dentro dos limites legais — nenhum efeito, mas fica o alerta de manter o manejo responsável.", mod:{} },
+  ];
+
+  const INTENSITY = {
+    baixo:  { frac:0.05, energy:9,  hpDelta:+4, trustDelta:-3 },
+    media:  { frac:0.10, energy:16, hpDelta:-1, trustDelta:+4 },
+    alta:   { frac:0.18, energy:26, hpDelta:-9, trustDelta:+7 },
+  };
+
+  function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+  // ========================= PIXEL ART (sprites desenhados à mão, sem imagens externas) =========================
+  function pixelSVG(matrix, palette, pxSize){
+    const cols = matrix[0].length, rows = matrix.length;
+    let rects = '';
+    for(let y=0;y<rows;y++){
+      for(let x=0;x<cols;x++){
+        const ch = matrix[y][x];
+        if(ch === '.') continue;
+        rects += '<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="'+palette[ch]+'"/>';
+      }
+    }
+    return '<svg viewBox="0 0 '+cols+' '+rows+'" width="'+(cols*pxSize)+'" height="'+(rows*pxSize)+'" shape-rendering="crispEdges" style="image-rendering:pixelated; display:block;">'+rects+'</svg>';
+  }
+
+  const TREE_PALETTE = { '1':'#5c3a1a', '2':'#2f9e44', '3':'#5cc76b' };
+  const TREE_ALIVE = [
+    "....2....",
+    "...222...",
+    "..22222..",
+    "..22322..",
+    ".2222222.",
+    ".2232232.",
+    "..22222..",
+    "....1....",
+    "....1....",
+    "....1....",
+  ];
+  const TREE_DEAD = [
+    ".........",
+    ".........",
+    ".........",
+    "...1.....",
+    "..111....",
+    "...1.....",
+    "...1.....",
+    "..111....",
+    "...1.....",
+    "...1.....",
+  ];
+
+  const FACE_PALETTE = { '1':'#0f380f', '2':'#306230' };
+  const FACE = {
+    great: [
+      "..2222...","221222122","222222222","222222222",
+      "211111112","222222222",".222222..","..2222...",
+    ],
+    ok: [
+      "..2222...","221222122","222222222","222222222",
+      "222111222","222222222",".222222..","..2222...",
+    ],
+    warn: [
+      "..2222...","221222122","222222222","222222222",
+      "222212222","222222222",".222222..","..2222...",
+    ],
+    danger: [
+      "..2222...","211222112","222222222","222222222",
+      "221111122","222222222",".222222..","..2222...",
+    ],
+  };
+
+  const WORLD_WIDTH = 1900;
+
+  function renderForest(){
+    const strip = document.getElementById('treesLayer');
+    strip.innerHTML = '';
+    const aliveCount = Math.round((state.hp/100) * TREE_COUNT_TOTAL);
+    for(let i=0;i<TREE_COUNT_TOTAL;i++){
+      const t = document.createElement('div');
+      t.className = 'tree';
+      t.style.left = (60 + i*115 + (i%3)*22) + 'px';
+      t.style.bottom = (6 + (i % 2 === 0 ? 0 : 40)) + 'px';
+      t.innerHTML = pixelSVG(i < aliveCount ? TREE_ALIVE : TREE_DEAD, TREE_PALETTE, 4);
+      strip.appendChild(t);
+    }
+  }
+
+  // ========================= PERSONAGEM (bonequinho que anda e pensa) =========================
+  const CHAR_PALETTE = { '0':'#2b2b2b', '2':'#f2c18d', '3':'#e0453d', '4':'#3a6fb5', '5':'#2e4d7a', '6':'#2b2b2b' };
+  const CHAR_TOP = [
+    "....33333....",
+    "...3333333...",
+    "..033333330..",
+    "...2222222...",
+    "...2022202...",
+    "...2222222...",
+    "...2222222...",
+    ".....222.....",
+    "..444444444..",
+    "..444444444..",
+    "...4444444...",
+    "...5555555...",
+  ];
+  const CHAR_THINK = CHAR_TOP.concat([
+    "...555.555...",
+    "...555.555...",
+    "....55.55....",
+    "....66.66....",
+  ]);
+  const CHAR_WALK_A = CHAR_TOP.concat([
+    "...555.555...",
+    "..555...555..",
+    "..55.....66..",
+    "..66.........",
+  ]);
+  const CHAR_WALK_B = CHAR_TOP.concat([
+    "...555.555...",
+    "..555...555..",
+    "..66.....55..",
+    ".........66..",
+  ]);
+  const BUBBLE_PALETTE = { '1':'#2b2b2b', '2':'#ffffff' };
+  const BUBBLE = [
+    ".11111.",
+    "1222221",
+    "1212121",
+    "1222221",
+    ".11111.",
+  ];
+
+  const CLOUD_PALETTE = { '1':'#ffffff', '2':'#eaf6ff' };
+  const CLOUD = [
+    "...1111.......",
+    "..111111111...",
+    ".11111111111..",
+    "22222222222222",
+  ];
+
+  const BUILDING_PALETTE = {
+    '0':'#4a3018', '1':'#8a5a2b', '2':'#3fa34d', '3':'#5c3a1a',
+    '4':'#e8dcc0', '5':'#f5c542', '6':'#3a2a15', '7':'#7ec8d8',
+  };
+  const BUILDING = [
+    ".........111.........",
+    ".......1111111.......",
+    ".....11111111111.....",
+    "...111111111111111...",
+    ".1111111111111111111.",
+    "000000000000000000000",
+    "334444444444444444433",
+    "334444447444744444433",
+    "334444447444744444433",
+    "334444444444444444433",
+    "334444444222444444433",
+    "334444444222444444433",
+    "334444444252444444433",
+    "666666666666666666666",
+  ];
+
+  (function renderClouds(){
+    const c1 = document.getElementById('cloud1');
+    const c2 = document.getElementById('cloud2');
+    if(c1) c1.innerHTML = pixelSVG(CLOUD, CLOUD_PALETTE, 4);
+    if(c2) c2.innerHTML = pixelSVG(CLOUD, CLOUD_PALETTE, 3);
+    const bld = document.getElementById('buildingSprite');
+    if(bld){
+      bld.style.left = '960px';
+      bld.innerHTML = pixelSVG(BUILDING, BUILDING_PALETTE, 4);
+    }
+  })();
+
+  // ========================= MORADORES (NPCs das 5 comunidades reais) =========================
+  // Nomes das comunidades vêm de territory.communities (definido em TERRITORIES,
+  // acima) — nunca fixos, pra não misturar comunidades do Brasil com as da Bolívia.
+
+  // Reaproveita a silhueta CHAR_THINK, só recolorida (cabelo castanho + camisa laranja
+  // em vez de boné vermelho + jaqueta azul do jogador) — assim o morador é visualmente distinto.
+  const VILLAGER_PALETTE = { '0':'#2b2b2b', '2':'#f2c18d', '3':'#5c3a1a', '4':'#e8942c', '5':'#3fa34d', '6':'#2b2b2b' };
+
+  let npcs = [];
+
+  let houses = [];
+  let collectedCards = [];
+
+  function setupWorld(){
+    npcs = [];
+    houses = [];
+    collectedCards = [];
+    riverCrossed = [false, false];
+    const margin = 160;
+    const span = WORLD_WIDTH - margin - 220;
+    const communities = territory.communities;
+    for(let i=0;i<TOTAL_YEARS;i++){
+      const x = margin + Math.round((span/(TOTAL_YEARS-1)) * i);
+      npcs.push({
+        year: i+1,
+        name: communities[i % communities.length],
+        x: x,
+        visited: false,
+      });
+      if(i < communities.length){
+        houses.push({
+          name: communities[i],
+          x: Math.max(40, x - 55),
+          visited: false,
+          data: territory.houses[communities[i]],
+        });
+      }
+    }
+  }
+
+  function renderHouses(){
+    const layer = document.getElementById('housesLayer');
+    layer.innerHTML = '';
+    houses.forEach(h=>{
+      const el = document.createElement('div');
+      el.className = 'house' + (h.visited ? ' done' : '');
+      el.style.left = h.x + 'px';
+      const pal = Object.assign({}, BUILDING_PALETTE, { '1': h.data.roofColor });
+      el.innerHTML =
+        '<div class="npc-tag">' + T('yourHouse') + ' ' + h.name + '</div>' +
+        '<div class="house-sprite">' + pixelSVG(BUILDING, pal, 2.6) + '</div>';
+      layer.appendChild(el);
+    });
+  }
+
+  function renderNpcs(){
+    const layer = document.getElementById('npcLayer');
+    if(!layer) return;
+    layer.innerHTML = '';
+    npcs.forEach(npc=>{
+      const el = document.createElement('div');
+      el.className = 'npc' + (npc.visited ? ' done' : '');
+      el.style.left = npc.x + 'px';
+      const isActive = (npc.year === state.year && !npc.visited);
+      el.innerHTML =
+        '<div class="npc-tag">' + npc.name + '</div>' +
+        (isActive ? '<div class="npc-flag">!</div>' : '') +
+        '<div class="npc-sprite">' + pixelSVG(CHAR_THINK, VILLAGER_PALETTE, 6) + '</div>';
+      layer.appendChild(el);
+    });
+  }
+
+
+  let charPos = 40;
+  let charDir = 1;
+  let charMode = 'idle'; // 'idle' | 'walk' | 'think'
+  let roaming = false;
+  let dialogueActive = false;
+  let currentNpc = null;
+  const keysDown = { left:false, right:false };
+  let lastFrameTime = 0;
+  let walkAnimAccum = 0;
+  let charWalkFrame = false;
+
+  function renderCharFrame(){
+    const el = document.getElementById('charSprite');
+    if(!el) return;
+    let shape;
+    if(charMode === 'think') shape = CHAR_THINK;
+    else if(charMode === 'walk') shape = charWalkFrame ? CHAR_WALK_B : CHAR_WALK_A;
+    else shape = CHAR_THINK; // idle parado, pernas juntas
+    el.innerHTML = pixelSVG(shape, CHAR_PALETTE, 7);
+  }
+
+  function updateCamera(){
+    const viewport = document.getElementById('forestStrip').clientWidth || 800;
+    let cam = charPos - viewport/2;
+    cam = clamp(cam, 0, Math.max(0, WORLD_WIDTH - viewport));
+    document.getElementById('world').style.transform = 'translateX(-' + cam + 'px)';
+  }
+
+  function checkNpcCollision(){
+    const target = npcs.find(n => n.year === state.year && !n.visited);
+    if(!target) return;
+    if(Math.abs(charPos - target.x) < 26){
+      triggerEncounter(target);
+    }
+  }
+
+  const BUILDING_X = () => 960;
+  const LIDER_LINES = [
+    "\"O ForestR já calcula biomassa com as equações de Higuchi corrigidas — o que falta é cruzar isso com GEDI pixel a pixel, aqui mesmo neste território.\"",
+    "\"O IPEB não substitui inventário de campo, mas mostra o tamanho do problema antes de gastar tempo e dinheiro medindo tudo na mão.\"",
+    "\"Se isso funcionar aqui, funciona na Bolívia também — os dados do MapBiomas já existem lá, é só trocar o recorte.\"",
+    "\"Energia sem desmatar floresta em pé — essa é a régua que a gente não pode perder de vista.\"",
+  ];
+
+  function checkBuildingCollision(){
+    if(performance.now() < collisionCooldownUntil) return;
+    if(Math.abs(charPos - BUILDING_X()) < 30){
+      enterBuilding();
+    }
+  }
+
+  function checkHouseCollision(){
+    if(performance.now() < collisionCooldownUntil) return;
+    const h = houses.find(h => !h.visited && Math.abs(charPos - h.x) < 24);
+    if(h) enterHouse(h);
+  }
+
+  function renderCards(){
+    const row = document.getElementById('cardsRow');
+    if(!row) return;
+    row.innerHTML = '';
+    territory.communities.forEach(name=>{
+      const card = collectedCards.find(c => c.name === name);
+      const slot = document.createElement('div');
+      slot.className = 'card-slot' + (card ? ' filled' : '');
+      slot.textContent = card ? card.icon : '?';
+      if(card){
+        slot.addEventListener('click', ()=>{
+          const detail = document.getElementById('cardDetail');
+          detail.innerHTML = '<b>' + card.name + '</b> — ' + card.fact + '<span class="src">' + card.src + '</span>';
+          detail.classList.add('show');
+        });
+      }
+      row.appendChild(slot);
+    });
+  }
+
+  function enterHouse(h){
+    roaming = false;
+    dialogueActive = true;
+    lastEnteredX = h.x;
+    h.visited = true;
+    playSfx('select');
+    document.getElementById('overworldScreen').classList.add('hidden');
+    document.getElementById('interiorScreen').classList.add('show');
+    document.getElementById('interiorBadge').textContent = h.name.toUpperCase();
+
+    if(!collectedCards.find(c => c.name === h.name)){
+      collectedCards.push({ name: h.name, icon: h.data.card.icon, fact: h.data.card.fact, src: h.data.card.src });
+      renderCards();
+    }
+
+    const line = h.name + ': "' + (h.data.occupation.charAt(0).toUpperCase()+h.data.occupation.slice(1)) + '" — ' + h.data.card.fact;
+    const el = document.getElementById('interiorText');
+    el.textContent = '';
+    let i = 0;
+    const t = setInterval(()=>{
+      i++;
+      el.textContent = line.slice(0,i);
+      if(i >= line.length) clearInterval(t);
+    }, 18);
+
+    renderHouses();
+  }
+
+  let lastEnteredX = null;
+  let collisionCooldownUntil = 0;
+
+  function enterBuilding(){
+    roaming = false;
+    dialogueActive = true;
+    lastEnteredX = BUILDING_X();
+    playSfx('select');
+    document.getElementById('overworldScreen').classList.add('hidden');
+    document.getElementById('interiorScreen').classList.add('show');
+    document.getElementById('interiorBadge').textContent = 'POSTO DE PESQUISA BIODATUM';
+    const line = LIDER_LINES[Math.floor(Math.random()*LIDER_LINES.length)];
+    document.getElementById('interiorText').textContent = '';
+    let i = 0;
+    const el = document.getElementById('interiorText');
+    const t = setInterval(()=>{
+      i++;
+      el.textContent = line.slice(0,i);
+      if(i >= line.length) clearInterval(t);
+    }, 20);
+  }
+
+  // ========================= CANOA (travessia de rio) =========================
+  const CANOE_PALETTE = { '1':'#8a5a2b', '2':'#c9524a', '3':'#3c7a8f' };
+  const CANOE = [
+    "..111111111..",
+    ".11222222211.",
+    "1112222222111",
+    "33333333333333",
+  ];
+  const RIVER_X = [560, 1280];
+  let riverCrossed = [];
+
+  function checkRiverCollision(){
+    RIVER_X.forEach((rx, idx)=>{
+      if(!riverCrossed[idx] && Math.abs(charPos - rx) < 10){
+        riverCrossed[idx] = true;
+        playCanoeCrossing(rx);
+      }
+    });
+  }
+
+  function playCanoeCrossing(rx){
+    roaming = false;
+    dialogueActive = true;
+    const overlay = document.getElementById('canoeOverlay');
+    overlay.classList.add('show');
+    overlay.querySelector('.canoe-text').textContent = T('canoeCrossing');
+    overlay.querySelector('.canoe-sprite').innerHTML = pixelSVG(CANOE, CANOE_PALETTE, 5);
+    playSfx('select');
+    setTimeout(()=>{
+      overlay.classList.remove('show');
+      roaming = true;
+      dialogueActive = false;
+    }, 1500);
+  }
+
+  function exitBuilding(){
+    document.getElementById('interiorScreen').classList.remove('show');
+    document.getElementById('overworldScreen').classList.remove('hidden');
+    if(lastEnteredX !== null) charPos = Math.max(10, lastEnteredX - 70);
+    roaming = true;
+    dialogueActive = false;
+    collisionCooldownUntil = performance.now() + 1000;
+  }
+
+  document.getElementById('exitBuildingBtn').addEventListener('click', exitBuilding);
+
+  // ========================= PERGUNTA-RELÂMPAGO =========================
+  const QUIZ_BANK = [
+    { q:"Biomassa residual, quando queimada pra gerar energia, emite mais CO₂ que diesel na mesma quantidade de energia?", a:false, exp:"Falso — o CO₂ da biomassa é considerado parte do ciclo de carbono da própria floresta (foi absorvido antes), diferente do carbono fóssil do diesel, que estava fora do ciclo." },
+    { q:"O RenovaBio criou um mercado de créditos chamado CBIO?", a:true, exp:"Verdade — CBIO é o Crédito de Descarbonização, instituído pela Lei 13.576/2017 e confirmado pelo STF em 2025." },
+    { q:"Vegetação secundária (capoeira) acumula biomassa mais rápido que floresta primária?", a:true, exp:"Verdade — em geral, capoeira jovem cresce rápido nos primeiros anos, mas nunca chega ao volume de biomassa da floresta primária madura." },
+    { q:"O GEDI mede biomassa florestal usando radar?", a:false, exp:"Falso — o GEDI usa LiDAR (laser), não radar. Quem usa radar é o PALSAR/ALOS, outra fonte de dados." },
+    { q:"A Bolívia é membro pleno do MERCOSUL desde 2024?", a:true, exp:"Verdade — a Bolívia ingressou como membro pleno do bloco em 2024." },
+    { q:"O poder calorífico da madeira amazônica usado neste projeto é de cerca de 18,5 MJ/kg?", a:true, exp:"Verdade — valor de Barros et al. (2009), estudo em Iranduba/AM." },
+  ];
+  let quizAsked = 0;
+
+  function maybeShowQuiz(onDone){
+    // aparece a cada ~3 encontros, no máximo uma vez por rodada
+    if(state.year % 3 !== 0){ onDone(); return; }
+    const key = 'quiz_' + state.year;
+    if(quizAsked === state.year){ onDone(); return; }
+    quizAsked = state.year;
+
+    const item = QUIZ_BANK[Math.floor(Math.random()*QUIZ_BANK.length)];
+    const overlay = document.getElementById('quizOverlay');
+    overlay.classList.add('show');
+    document.getElementById('quizQuestion').textContent = item.q;
+    document.getElementById('quizResult').classList.remove('show');
+    const btnTrue = document.getElementById('quizTrueBtn');
+    const btnFalse = document.getElementById('quizFalseBtn');
+    btnTrue.disabled = false; btnFalse.disabled = false;
+
+    function answer(val){
+      btnTrue.disabled = true; btnFalse.disabled = true;
+      const correct = (val === item.a);
+      state.quizTotal++;
+      if(correct){ state.trust = clamp(state.trust + 4, 0, 100); state.quizCorrect++; }
+      const result = document.getElementById('quizResult');
+      result.innerHTML = (correct ? '✅ ' + T('quizCorrect') : '❌ ' + T('quizWrong') + ' ' + (item.a ? 'Verdadeiro' : 'Falso') + '.') + '<br><small>' + item.exp + '</small>';
+      result.classList.add('show');
+      playSfx(correct ? 'good' : 'bad');
+      renderHUD();
+      setTimeout(()=>{
+        overlay.classList.remove('show');
+        onDone();
+      }, 2600);
+    }
+    btnTrue.onclick = ()=>answer(true);
+    btnFalse.onclick = ()=>answer(false);
+  }
+
+  function triggerEncounter(npc){
+    roaming = false;
+    dialogueActive = true;
+    currentNpc = npc;
+    npc.visited = true;
+    renderNpcs();
+    charMode = 'think';
+    renderCharFrame();
+    document.getElementById('thoughtBubble').classList.remove('show');
+    maybeShowQuiz(()=> startYearDialogue(npc));
+  }
+
+  function gameLoop(ts){
+    const dt = Math.min(40, ts - (lastFrameTime || ts));
+    lastFrameTime = ts;
+
+    if(roaming && !dialogueActive){
+      const speed = 0.19; // px/ms
+      let moved = false;
+      if(keysDown.left){ charPos -= speed*dt; charDir = -1; moved = true; }
+      if(keysDown.right){ charPos += speed*dt; charDir = 1; moved = true; }
+      charPos = clamp(charPos, 10, WORLD_WIDTH - 30);
+
+      const charEl = document.getElementById('charSprite');
+      if(charEl){
+        charEl.style.left = charPos + 'px';
+        charEl.style.transform = charDir < 0 ? 'scaleX(-1)' : 'scaleX(1)';
+      }
+
+      if(moved){
+        charMode = 'walk';
+        walkAnimAccum += dt;
+        if(walkAnimAccum > 160){ walkAnimAccum = 0; charWalkFrame = !charWalkFrame; renderCharFrame(); }
+      } else if(charMode !== 'idle'){
+        charMode = 'idle';
+        renderCharFrame();
+      }
+
+      checkNpcCollision();
+      if(roaming) checkBuildingCollision();
+      if(roaming) checkHouseCollision();
+      if(roaming) checkRiverCollision();
+    }
+
+    updateCamera();
+    requestAnimationFrame(gameLoop);
+  }
+
+  // ---- Teclado ----
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowLeft'){ keysDown.left = true; e.preventDefault(); }
+    if(e.key === 'ArrowRight'){ keysDown.right = true; e.preventDefault(); }
+  });
+  document.addEventListener('keyup', (e)=>{
+    if(e.key === 'ArrowLeft') keysDown.left = false;
+    if(e.key === 'ArrowRight') keysDown.right = false;
+  });
+
+  // ---- Botões de toque (mobile) ----
+  function bindHold(id, key){
+    const el = document.getElementById(id);
+    if(!el) return;
+    const down = (e)=>{ e.preventDefault(); ensureAudio(); keysDown[key] = true; };
+    const up = ()=>{ keysDown[key] = false; };
+    el.addEventListener('pointerdown', down);
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointerleave', up);
+    el.addEventListener('pointercancel', up);
+  }
+  bindHold('btnLeft', 'left');
+  bindHold('btnRight', 'right');
+
+  // ========================= MÁQUINA DE ESCREVER (estilo Pokémon) =========================
+  let typeTimer = null;
+  let typingDone = true;
+
+  function typeText(fullText, onDone){
+    const el = document.getElementById('eventText');
+    const arrow = document.getElementById('dialogueArrow');
+    const choices = document.getElementById('choices');
+    if(typeTimer) clearInterval(typeTimer);
+    el.textContent = '';
+    el.dataset.full = fullText;
+    arrow.classList.remove('show');
+    choices.classList.add('typing');
+    typingDone = false;
+
+    let i = 0;
+    typeTimer = setInterval(()=>{
+      i++;
+      el.textContent = fullText.slice(0,i);
+      if(i >= fullText.length){
+        clearInterval(typeTimer);
+        typingDone = true;
+        arrow.classList.add('show');
+        choices.classList.remove('typing');
+        document.getElementById('thoughtBubble').classList.add('show');
+        document.getElementById('thoughtBubble').style.left = charPos + 6 + 'px';
+        document.getElementById('thoughtBubble').innerHTML = pixelSVG(BUBBLE, BUBBLE_PALETTE, 4);
+        if(onDone) onDone();
+      }
+    }, 22);
+  }
+
+  function skipTyping(){
+    if(typingDone) return;
+    const el = document.getElementById('eventText');
+    clearInterval(typeTimer);
+    el.textContent = el.dataset.full || el.textContent;
+    typingDone = true;
+    document.getElementById('dialogueArrow').classList.add('show');
+    document.getElementById('choices').classList.remove('typing');
+    document.getElementById('thoughtBubble').classList.add('show');
+    document.getElementById('thoughtBubble').style.left = charPos + 6 + 'px';
+    document.getElementById('thoughtBubble').innerHTML = pixelSVG(BUBBLE, BUBBLE_PALETTE, 4);
+  }
+
+  document.getElementById('dialogueBox').addEventListener('click', (e)=>{
+    if(e.target.closest('.choice')) return;
+    skipTyping();
+  });
+
+  // ---- Avatar ----
+  const AVATAR_LINES = {
+    great: ["Isso! A floresta respira e a comunidade confia em você.", "Guardião orgulhoso — esse é o equilíbrio certo."],
+    ok: ["Estamos indo bem, mas sem folga pra erro.", "Segura essa mão firme, ainda dá tempo de melhorar."],
+    warn: ["Cuidado — alguma coisa está no limite.", "Preciso te alertar: uma das barras está baixa demais."],
+    danger: ["Isso está saindo do controle!", "Se continuar assim, alguém vai desistir de você."],
+  };
+
+  function avatarMood(){
+    const worst = Math.min(state.hp, state.trust);
+    if(worst >= 65) return 'great';
+    if(worst >= 40) return 'ok';
+    if(worst >= 20) return 'warn';
+    return 'danger';
+  }
+
+  function renderAvatar(){
+    const mood = avatarMood();
+    const lines = AVATAR_LINES[mood];
+    document.getElementById('avatarText').innerHTML = '<b>GUARDIÃO DIZ:</b> "' + lines[Math.floor(Math.random()*lines.length)] + '"';
+  }
+
+  function pickMusicMode(){
+    return avatarMood() === 'danger' || avatarMood() === 'warn' ? 'tense' : 'calm';
+  }
+
+  function updateMusicMode(){
+    const desired = pickMusicMode();
+    if(desired !== currentMode) scheduleLoop(desired);
+  }
+
+  // ---- Confetti ----
+  function launchConfetti(){
+    const colors = ['#e0453d','#3a6fb5','#f5c542','#3fa34d','#fdf1d6'];
+    for(let i=0;i<40;i++){
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random()*100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animation = 'confettiFall ' + (1.8+Math.random()*1.4) + 's steps(6) forwards';
+      c.style.animationDelay = (Math.random()*0.5)+'s';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), 3600);
+    }
+  }
+
+  function shakeScreen(){
+    const w = document.getElementById('pageWrap');
+    w.classList.remove('shake'); void w.offsetWidth; w.classList.add('shake');
+  }
+
+  function renderHUD(){
+    document.getElementById('hpVal').textContent = Math.round(state.hp);
+    document.getElementById('trustVal').textContent = Math.round(state.trust);
+    document.getElementById('energyVal').textContent = state.energy;
+    const co2 = Math.round(state.energy * CO2_FACTOR);
+    document.getElementById('co2Val').textContent = co2;
+    document.getElementById('yearVal').textContent = state.year + ' / ' + TOTAL_YEARS;
+    document.getElementById('trustLabel').textContent = territory.trustLabel;
+
+    const hpBar = document.getElementById('hpBar');
+    hpBar.style.width = state.hp + '%';
+    hpBar.style.background = state.hp > 60 ? 'var(--ok)' : state.hp > 30 ? 'var(--warn)' : 'var(--danger)';
+    hpBar.classList.toggle('critical', state.hp <= 30);
+
+    const trustBar = document.getElementById('trustBar');
+    trustBar.style.width = state.trust + '%';
+    trustBar.style.background = state.trust > 60 ? 'var(--blue)' : state.trust > 30 ? 'var(--warn)' : 'var(--danger)';
+    trustBar.classList.toggle('critical', state.trust <= 30);
+
+    document.getElementById('energyBar').style.width = clamp(state.energy/2.5,0,100) + '%';
+    document.getElementById('co2Bar').style.width = clamp(co2/2,0,100) + '%';
+    document.getElementById('yearBar').style.width = (state.year/TOTAL_YEARS*100) + '%';
+
+    renderForest();
+    renderAvatar();
+    updateMusicMode();
+  }
+
+  function addLog(text){
+    state.log.unshift(text);
+    const log = document.getElementById('log');
+    log.innerHTML = state.log.slice(0,10).map(t => '<div class="log-row">'+t+'</div>').join('');
+  }
+
+  let currentEvent = EVENTS[0];
+  let gameLoopStarted = false;
+
+  function startYearDialogue(npc){
+    currentEvent = state.year === 1 ? EVENTS[0] : EVENTS[Math.floor(Math.random()*EVENTS.length)];
+    document.getElementById('yearBadge').textContent = 'ANO ' + state.year + ' · ' + npc.name;
+    document.getElementById('eventTitle').textContent = npc.name + ' te chama';
+    const intro = state.year === 1
+      ? 'Em ' + npc.name + ', ' + territory.intro + ' Quanto vai extrair este ano?'
+      : 'Em ' + npc.name + ': "' + currentEvent.text + '" Quanto vai extrair este ano?';
+    typeText(intro);
+  }
+
+  function applyChoice(intensity){
+    playSfx('click');
+    document.getElementById('choices').classList.add('typing');
+    document.getElementById('dialogueArrow').classList.remove('show');
+    const cfg = INTENSITY[intensity];
+    let hpDelta = cfg.hpDelta;
+    let trustDelta = cfg.trustDelta;
+
+    if(currentEvent.mod.hpPenaltyMult && hpDelta < 0) hpDelta *= currentEvent.mod.hpPenaltyMult;
+    if(currentEvent.mod.hpBonus) hpDelta += currentEvent.mod.hpBonus;
+    if(currentEvent.mod.trustDemand && intensity !== 'alta') trustDelta -= 4 * currentEvent.mod.trustDemand;
+
+    const wasOk = avatarMood() === 'great' || avatarMood() === 'ok';
+
+    state.hp = clamp(state.hp + hpDelta, 0, 100);
+    state.trust = clamp(state.trust + trustDelta, 0, 100);
+    state.energy += cfg.energy;
+    state.minHp = Math.min(state.minHp, state.hp);
+    state.minTrust = Math.min(state.minTrust, state.trust);
+    if(intensity === 'alta') state.usedHigh = true;
+
+    const label = intensity === 'baixo' ? T('choiceLowTitle') : intensity === 'media' ? T('choiceMedTitle') : T('choiceHighTitle');
+    addLog('<b>Ano '+state.year+' · '+(currentNpc?currentNpc.name:'')+'</b> — '+label+' · saúde '+(hpDelta>=0?'+':'')+Math.round(hpDelta)+', confiança '+(trustDelta>=0?'+':'')+Math.round(trustDelta));
+
+    state.year++;
+    renderHUD();
+    renderNpcs();
+
+    const isBad = avatarMood() === 'danger';
+    if(isBad && wasOk) shakeScreen();
+
+    document.getElementById('thoughtBubble').classList.remove('show');
+
+    if(state.hp <= 0){
+      endGame('collapse');
+    } else if(state.trust <= 0){
+      endGame('abandon');
+    } else if(state.year > TOTAL_YEARS){
+      endGame('finished');
+    } else {
+      dialogueActive = false;
+      roaming = true;
+      charMode = 'idle';
+      renderCharFrame();
+    }
+  }
+
+  function endGame(reason){
+    stopMusic();
+    roaming = false;
+    dialogueActive = false;
+    document.getElementById('gameArea').classList.add('hidden');
+    const end = document.getElementById('endScreen');
+    end.classList.add('show');
+
+    document.getElementById('finalHp').textContent = Math.round(state.hp);
+    document.getElementById('finalTrust').textContent = Math.round(state.trust);
+    document.getElementById('finalEnergy').textContent = state.energy + ' MWh*';
+
+    const verdict = document.getElementById('verdictText');
+    const desc = document.getElementById('verdictDesc');
+    let good = false;
+
+    if(reason === 'collapse'){
+      verdict.className = 'verdict bad';
+      verdict.textContent = 'Colapso da vegetação';
+      desc.textContent = 'A extração superou a capacidade de regeneração da ' + territory.vegName + '. Isso é exatamente o que a premissa conservadora de 10% do IPEB busca evitar — resíduo aproveitável não é o mesmo que floresta sem limite.';
+      shakeScreen();
+    } else if(reason === 'abandon'){
+      verdict.className = 'verdict bad';
+      verdict.textContent = territory.communityName.charAt(0).toUpperCase()+territory.communityName.slice(1)+' perdeu a confiança';
+      desc.textContent = 'Extrair pouco demais, por tempo demais, também tem custo: sem energia suficiente para o beneficiamento local, a comunidade parou de acreditar no manejo. Descarbonizar sem retorno social não sustenta o projeto.';
+      shakeScreen();
+    } else if(state.hp > 55 && state.trust > 55){
+      verdict.className = 'verdict good';
+      verdict.textContent = 'Transição energética sustentável';
+      desc.textContent = 'Você navegou os 10 anos mantendo a vegetação saudável, a comunidade energizada e evitou ' + Math.round(state.energy*CO2_FACTOR) + ' toneladas de CO₂ ao substituir diesel — exatamente o equilíbrio que o IPEB tenta formalizar.';
+      good = true;
+    } else {
+      verdict.className = 'verdict mid';
+      verdict.textContent = 'Equilíbrio precário';
+      desc.textContent = 'Você chegou ao final dos 10 anos e evitou ' + Math.round(state.energy*CO2_FACTOR) + ' toneladas de CO₂, mas no limite — vegetação ou confiança comunitária ficaram fragilizadas. Um IPEB real precisaria de monitoramento contínuo, não só uma decisão anual fixa.';
+    }
+
+    playSfx(good ? 'good' : 'bad');
+    if(good) launchConfetti();
+
+    renderBadges(reason, good);
+    renderRealComparison();
+    generateShareCard(reason, good);
+  }
+
+  // ========================= CONQUISTAS =========================
+  const ALL_BADGES = [
+    { id:'perfeito', icon:'🏆', label:'Equilíbrio Perfeito', test: s => s.minHp >= 60 && s.minTrust >= 60 },
+    { id:'conservador', icon:'🌱', label:'Nunca no Máximo', test: s => !s.usedHigh },
+    { id:'colecionador', icon:'🃏', label:'Coleção Completa', test: s => collectedCards.length >= territory.communities.length },
+    { id:'estudioso', icon:'🧠', label:'Quiz Mestre', test: s => s.quizTotal > 0 && s.quizCorrect === s.quizTotal },
+    { id:'bolivia', icon:'🌎', label:'Chegou até a Bolívia', test: s => territory.flag === '🇧🇴' },
+    { id:'explorador', icon:'🧭', label:'Explorou o Posto BIODATUM', test: s => lastEnteredX !== null },
+  ];
+
+  function renderBadges(reason, good){
+    const wrap = document.getElementById('badgesRow');
+    if(!wrap) return;
+    wrap.innerHTML = '';
+    const earned = ALL_BADGES.filter(b => b.test(state));
+    if(earned.length === 0){
+      wrap.innerHTML = '<span style="font-family:\'VT323\',monospace; font-size:14px; color:#8a5a2b;">Nenhuma conquista desta vez — tenta de novo!</span>';
+      return;
+    }
+    earned.forEach(b=>{
+      const el = document.createElement('div');
+      el.className = 'badge-chip';
+      el.innerHTML = '<span class="badge-icon">'+b.icon+'</span>' + b.label;
+      wrap.appendChild(el);
+    });
+  }
+
+  // ========================= COMPARAÇÃO COM O DADO REAL =========================
+  function renderRealComparison(){
+    const el = document.getElementById('realComparison');
+    if(!el) return;
+    const yourMwh = state.energy;
+    const realMwh = 15759; // validação preliminar com dados reais de GEDI L4A pixel a pixel (Seção 6.6, 08/2026), convergente com a estimativa de literatura (17.102 MWh, ~8% de diferença)
+    const pct = ((yourMwh / realMwh) * 100).toFixed(3);
+    el.innerHTML =
+      '<div class="rc-title">📊 Comparando com o dado real do projeto</div>' +
+      '<div class="rc-row"><span>Sua jogada</span><b>' + yourMwh.toLocaleString('pt-BR') + ' MWh (fictício, simplificado)</b></div>' +
+      '<div class="rc-row"><span>Validação real do IPEB (GEDI L4A, 08/2026)</span><b>~15.759 MWh</b></div>' +
+      '<div class="rc-note">O número real vem de processamento GEDI L4A pixel a pixel (111 pulsos válidos, filtrados à mancha de 293,7 ha de transição florestal via MapBiomas Coleção 10 dentro do polígono oficial de T1) — não é um número de jogo, é o resultado da Seção 6.6 da proposta submetida ao 19º Prêmio MERCOSUL, convergente com a estimativa de literatura (17.102 MWh) por método independente.</div>' +
+      '<div class="rc-note">Se esse padrão de manejo se repetisse em outros territórios amazônicos com perfil parecido, o efeito de descarbonização se multiplicaria na mesma proporção — essa é justamente a razão pela qual o IPEB foi desenhado para ser replicável, não um cálculo único e isolado.</div>';
+  }
+
+  // ========================= CARTÃO COMPARTILHÁVEL =========================
+  function generateShareCard(reason, good){
+    const canvas = document.getElementById('shareCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    // fundo
+    const grad = ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0, '#a8e0f5'); grad.addColorStop(0.5, '#6ec6f0');
+    grad.addColorStop(0.5, '#3fa34d'); grad.addColorStop(1, '#2b7a38');
+    ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+
+    ctx.fillStyle = 'rgba(253,241,214,0.94)';
+    ctx.fillRect(30,30,W-60,H-60);
+    ctx.strokeStyle = '#2b2b2b'; ctx.lineWidth = 6;
+    ctx.strokeRect(30,30,W-60,H-60);
+
+    ctx.fillStyle = '#2b2b2b';
+    ctx.font = '900 26px monospace';
+    ctx.fillText('IPEB — GUARDIÕES DO RESÍDUO', 55, 80);
+
+    ctx.font = 'bold 20px monospace';
+    ctx.fillStyle = '#e0453d';
+    const verdictLabel = reason === 'collapse' ? 'COLAPSO DA VEGETAÇÃO'
+      : reason === 'abandon' ? 'PERDEU A CONFIANÇA'
+      : good ? 'TRANSIÇÃO SUSTENTÁVEL' : 'EQUILÍBRIO PRECÁRIO';
+    ctx.fillText(verdictLabel, 55, 120);
+
+    ctx.fillStyle = '#2b2b2b';
+    ctx.font = '18px monospace';
+    ctx.fillText(territory.flag + '  Território: ' + territory.communityName + ' e região', 55, 165);
+    ctx.fillText('⚡ Energia gerada: ' + state.energy + ' MWh', 55, 200);
+    ctx.fillText('🌍 CO₂ evitado: ' + Math.round(state.energy*CO2_FACTOR) + ' toneladas', 55, 230);
+    ctx.fillText('🃏 Cartas coletadas: ' + collectedCards.length + '/' + territory.communities.length, 55, 260);
+    ctx.fillText('🧠 Quiz: ' + state.quizCorrect + '/' + state.quizTotal + ' certas', 55, 290);
+
+    const earned = ALL_BADGES.filter(b => b.test(state));
+    ctx.font = '32px monospace';
+    ctx.fillText(earned.map(b=>b.icon).join(' ') || '—', 55, 340);
+
+    ctx.font = '13px monospace';
+    ctx.fillStyle = '#5c3a1a';
+    ctx.fillText('19º Prêmio MERCOSUL de Ciência, Tecnologia e Inovação — BIODATUM/ForestR', 55, H-45);
+
+    const link = document.getElementById('downloadCardBtn');
+    if(link) link.href = canvas.toDataURL('image/png');
+  }
+
+  document.getElementById('choices').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.choice');
+    if(!btn) return;
+    if(!dialogueActive || !typingDone) return;
+    applyChoice(btn.dataset.intensity);
+  });
+
+  document.getElementById('territorySelect').addEventListener('click', (e)=>{
+    const card = e.target.closest('.territory-card');
+    if(!card) return;
+    ensureAudio();
+    playSfx('select');
+    territory = TERRITORIES[card.dataset.territory];
+    lang = territory.lang;
+    applyLanguage();
+    document.getElementById('territorySelect').classList.remove('show');
+    document.getElementById('gameArea').classList.remove('hidden');
+    state = { hp:100, trust:50, energy:0, year:1, log:[], minHp:100, minTrust:100, usedHigh:false, quizCorrect:0, quizTotal:0 };
+    charPos = 40; charDir = 1; charMode = 'idle';
+    setupWorld();
+    renderHUD();
+    renderNpcs();
+    renderHouses();
+    renderCards();
+    renderCharFrame();
+    roaming = true;
+    dialogueActive = false;
+    scheduleLoop(pickMusicMode());
+    if(!gameLoopStarted){ gameLoopStarted = true; requestAnimationFrame(gameLoop); }
+  });
+
+  document.getElementById('restartBtn').addEventListener('click', ()=>{
+    document.getElementById('endScreen').classList.remove('show');
+    document.getElementById('territorySelect').classList.add('show');
+    document.getElementById('gameArea').classList.add('hidden');
+  });
+
+  applyLanguage();
+})();
+</script>
+</body>
+</html>
