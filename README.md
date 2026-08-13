@@ -12,7 +12,7 @@ O jogador administra o aproveitamento de biomassa residual florestal ao longo de
 
 ## Jogar
 
-🔗 **[Jogar online](https://scasttro7.github.io/NOME-DO-REPO/)**
+🔗 **[Jogar online](https://scasttro7.github.io/Guardi-es-do-Res-duo/)**
 
 ## Citação
 
