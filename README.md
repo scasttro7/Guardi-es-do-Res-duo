@@ -2,6 +2,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21910686.svg)](https://doi.org/10.5281/zenodo.21910686)
 
+![Prévia do jogo](assets/readme_preview_ingame.png)
+
 Jogo interativo de gestão territorial sobre transição energética e descarbonização, desenvolvido como protótipo de comunicação científica para o **Índice de Potencial Energético de Biomassa Residual (IPEB)**.
 
 ## Sobre
@@ -10,7 +12,7 @@ O jogador administra o aproveitamento de biomassa residual florestal ao longo de
 
 ## Jogar
 
-🔗 **[Jogar online](https://scasttro7.github.io/Guardi-es-do-Res-duo/)**
+🔗 **[Jogar online](https://scasttro7.github.io/NOME-DO-REPO/)**
 
 ## Citação
 
