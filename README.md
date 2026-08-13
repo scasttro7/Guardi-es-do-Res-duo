@@ -18,7 +18,7 @@ O jogador administra o aproveitamento de biomassa residual florestal ao longo de
 
 Se este software for utilizado ou referenciado, favor citar:
 
-> SILVA, S. C. *Guardiões do Resíduo — v1.0.0*. Zenodo, 2026. DOI: [10.5281/zenodo.21910686](https://doi.org/10.5281/zenodo.21910686).
+> CASTRO DA SILVA, S. *Guardiões do Resíduo — v1.0.0*. Zenodo, 2026. DOI: [10.5281/zenodo.21910686](https://doi.org/10.5281/zenodo.21910686).
 
 ## Contexto acadêmico
 
