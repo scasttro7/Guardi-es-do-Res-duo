@@ -1,19 +1,23 @@
-# Guardiões do Resíduo 
-Jogo educativo interativo para comunicação científica e educação ambiental sobre
-o uso sustentável de biomassa residual para geração descentralizada de energia em
-territórios amazônicos.
+# Guardiões do Resíduo — IPEB
 
-Desenvolvido no âmbito do projeto de pesquisa BIODATUM / ForestR.
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21910686.svg)](https://doi.org/10.5281/zenodo.21910686)
 
-O protótipo explora a relação entre:
+Jogo interativo de gestão territorial sobre transição energética e descarbonização, desenvolvido como protótipo de comunicação científica para o **Índice de Potencial Energético de Biomassa Residual (IPEB)**.
 
-biomassa residual;
-regeneração florestal;
-energia renovável descentralizada;
-governança territorial;
-meios de subsistência da comunidade.
-Territórios incluídos:
+## Sobre
 
-RDS Puranga Conquista, Amazonas, Brasil;
-Território amazônico na Bolívia.
-Esta versão corresponde à primeira versão pública do jogo.
+O jogador administra o aproveitamento de biomassa residual florestal ao longo de dez anos, equilibrando saúde da vegetação, confiança comunitária, energia gerada e CO₂ evitado — testado nos cenários **Brasil** (RDS Puranga Conquista, Amazonas) e **Bolívia**, como prova de conceito de replicabilidade regional no MERCOSUL.
+
+## Jogar
+
+🔗 **[Jogar online](https://scasttro7.github.io/Guardi-es-do-Res-duo/)**
+
+## Citação
+
+Se este software for utilizado ou referenciado, favor citar:
+
+> SILVA, S. C. *Guardiões do Resíduo — v1.0.0*. Zenodo, 2026. DOI: [10.5281/zenodo.21910686](https://doi.org/10.5281/zenodo.21910686).
+
+## Contexto acadêmico
+
+Desenvolvido no âmbito do projeto BIODATUM/ForestR (PPGCASA/UFAM), como parte da proposta submetida ao **19º Prêmio MERCOSUL de Ciência, Tecnologia e Inovação — Edição 2026** (categoria Jovem Pesquisador).
